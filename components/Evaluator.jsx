@@ -34,7 +34,7 @@ const Evaluator = ({ editorState }) => {
   });
 
   const evaluate_program = () => {
-    let program = editorState.doc.text.join("\n");
+    let program = editorState.doc.toString();
     let r = wasm.evaluate(program);
   };
 
