@@ -39,7 +39,7 @@ const Evaluator = ({ editorState }) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-half h-full flex flex-col">
       <div className="flex flex-row  p-2 bg-gray-500 text-white items-center">
         <div>Actions:</div>
         <button className="btn mx-2" onClick={evaluate_program}>

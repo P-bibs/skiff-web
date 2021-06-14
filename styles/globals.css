@@ -1,4 +1,9 @@
 @tailwind base;
+
+.w-half {
+    width: 50%;
+}
+
 @tailwind components;
 
 .btn {
