@@ -48,7 +48,7 @@ const Evaluator = ({ editorState }) => {
         <button className="btn mx-2">Verify</button>
       </div>
 
-      <div className="h-full" ref={terminalRef}></div>
+      <div className="h-0 flex-grow" ref={terminalRef}></div>
     </div>
   );
 };

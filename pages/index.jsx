@@ -23,7 +23,7 @@ export default function Home() {
         <div className="w-full h-10 bg-gray-800 text-white flex flex-row items-center">
           <div className="p-2">Skiff</div>
         </div>
-        <div className="w-full h-full flex flex-row">
+        <div className="w-full h-0 flex-grow flex flex-row">
           <Editor editorRef={editorRef} />
           <Evaluator editorState={state} />
         </div>
