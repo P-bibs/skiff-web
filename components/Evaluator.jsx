@@ -24,7 +24,7 @@ const Evaluator = ({ editorState }) => {
       window.writeToTerm = (s) => term.writeln(s);
       setTerm(term);
 
-      term.write("Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ");
+      term.writeln("\x1B[1;3;31mSkiff\x1B[0m initialized");
     }
   });
 
