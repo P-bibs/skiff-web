@@ -32,47 +32,51 @@ export default function Home() {
   );
 }
 
-const exampleProgram = `
-data List:
-	| link(first,rest)
-	| empty()
-end
-let mt = empty()
-
-data Option:
+const exampleProgram = `data Option:
     | some(v)
     | none()
 end
 
-def singles(lst, to_replace):
-    match to_replace:
-        | some(v) => 
-            match lst:
-                | link(f,r) => 
-                    if f == v:
-                        singles(r, to_replace)
-                    else:
-                        link(f, singles(r, some(f)))
-                    end
-                | empty() => empty()
-            end
-        | none() =>
-            match lst:
-                | link(f,r) => link(f, singles(r, some(f)))
-                | empty() => empty()
-            end
+data List:
+    | link(f,r)
+    | empty()
+end
+
+data Tree:
+    | node(v,l,r)
+    | leaf()
+end
+
+def map(func, l):
+    match l:
+        | link(f,r) => link(func(f), map(func, r))
+        | empty() => empty()
     end
 end
 
-let one_through_four = link(1,link(2,link(3,link(4,mt))))
-let with_dups1 = link(1,link(1,link(2,link(2,link(3,link(4,mt))))))
-let with_dups2 = link(1,link(2,link(3,link(3,link(3,link(4,mt))))))
+def filter(func, l):
+    match l:
+        | link(f,r) => if func(f):
+                link(f, filter(func, r))
+            else:
+                filter(func, r)
+            end
+        | empty() => empty()
+    end
+end
 
-singles(mt, none()) == mt
+def fold(func, l, default):
+    match l:
+        | link(f,r) => func(f, fold(func, r, default))
+        | empty() => default
+    end
+end
 
-singles(one_through_four, none()) == one_through_four
+let list = link(1, link(2, link(3, link(4, empty()))))
 
-singles(with_dups1, none()) == one_through_four
+map(lambda(x): x + 1 end, list)
 
-singles(with_dups2, none()) == one_through_four
+filter(lambda(x): x == 2 end, list)
+
+fold(lambda(n,a): n + a end, list, 0)
 `;
