@@ -1,0 +1,150 @@
+@precedence {
+  trail
+  grouping @left
+  exponentiation @right
+  multiplicative @left
+  additive @left
+  bitAnd @left
+  bitXor @left
+  bitOr @left
+  inequality @left
+  equality @left
+  land @left
+  lor @left
+
+  typeArrow @left
+}
+
+// templates
+commaSep<content> { "" | content ("," content)* }
+kw<term> { @specialize[@name={term}]<identifier, term> }
+
+// main rules
+
+@top Program { topLevelExpression* }
+
+topLevelExpression {
+  Number |
+  Boolean |
+  VariableExpr |
+  IfExpr | 
+  // BinaryExpression |
+  FunCallExpr |
+  LambdaExpr |
+  FunctionExpr |
+  DataDeclarationExpr |
+  MatchExpr |
+
+  LetExprTopLevel
+}
+
+expression {
+  Number |
+  Boolean |
+  VariableExpr |
+  IfExpr | 
+  // BinaryExpression |
+  FunCallExpr |
+  LambdaExpr |
+  FunctionExpr |
+  DataDeclarationExpr |
+  MatchExpr |
+
+  "(" expression ")" |
+  LetExpr
+}
+
+VariableExpr {
+  VariableName
+}
+LetExpr {
+  kw<"let"> IdentifierDecl "="  expression
+  expression
+}
+
+LetExprTopLevel {
+  kw<"let"> IdentifierDecl "="  expression !trail
+}
+
+IfExpr {
+  kw<"if"> expression Body
+  (kw<"elif"> expression Body)*
+  kw<"else"> Body End
+}
+
+BinaryExpression {
+  expression !exponentiation ("**")                    expression |
+  expression !multiplicative ("*" | "/" | "%")         expression |
+  expression !additive       ("+" | "-")               expression |
+  expression !bitAnd         ("&")                     expression |
+  expression !bitXor         ("^")                     expression |
+  expression !bitOr          ("|")                     expression |
+  expression !inequality     ("<" | "<=" | ">" | ">=") expression |
+  expression !equality       ("==")                    expression |
+  expression !land           ("and")                   expression |
+  expression !lor            ("or")                    expression 
+}
+
+
+// FIXME: allow non-identifier functions
+FunCallExpr {
+  identifier !trail "(" commaSep<IdentifierDecl> ")"
+}
+
+LambdaExpr {
+  kw<"lambda"> "(" commaSep<IdentifierDecl> ")" Body End 
+}
+
+FunctionExpr {
+  kw<"def"> FunctionName "(" commaSep<IdentifierDecl> ")"
+  ( "->" Type)?
+  Body
+  End
+}
+
+DataDeclarationExpr {
+  kw<"data"> DataName ":"
+  "|"? DataVariantName "(" commaSep<IdentifierDecl> ")"
+  ( "|" DataVariantName "(" commaSep<IdentifierDecl> ")" )*
+  End
+}
+
+MatchExpr {
+  kw<"match"> expression ":"
+  ("|" Pattern "=>" expression)*
+  End
+}
+
+// extra rules
+Body {
+  ":" expression
+}
+
+Type {
+  Type !typeArrow "->" Type |
+  "(" commaSep<Type> ")" "->" Type |
+  identifier ~typeAmbiguity ("<" commaSep<Type> ">")?
+}
+
+Pattern {
+  Number |
+  Boolean |
+  identifier ("(" commaSep<Pattern> ")" )?
+}
+
+// token and skip definitions
+@skip  { space }
+
+VariableName { identifier ~functionApp  }
+FunctionName { identifier }
+DataName { identifier }
+DataVariantName { identifier }
+IdentifierDecl { identifier ( ":" Type )? }
+Boolean { kw<"false"> | kw<"true"> }
+End { kw<"end"> }
+
+@tokens {
+  space { std.whitespace+ }
+  Number { std.digit+ }
+  identifier { $[a-zA-Z]$[a-zA-Z0-9_]* }
+}

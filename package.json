@@ -24,6 +24,7 @@
     "@codemirror/rectangular-selection": "^0.18.0",
     "@codemirror/search": "^0.18.4",
     "@codemirror/state": "^0.18.7",
+    "@codemirror/theme-one-dark": "^0.18.1",
     "next": "latest",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.0.4",
+    "lezer-generator": "^0.13.4",
     "postcss": "^8.1.10",
     "tailwindcss": "^2.1.1"
   }
