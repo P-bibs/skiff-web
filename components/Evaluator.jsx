@@ -25,6 +25,7 @@ const Evaluator = ({ editorState }) => {
       setTerm(term);
 
       term.writeln("\x1B[1;3;31mSkiff\x1B[0m initialized");
+      term.write("> ");
     }
   });
 
@@ -35,7 +36,9 @@ const Evaluator = ({ editorState }) => {
 
   const evaluate_program = () => {
     let program = editorState.doc.toString();
+    term.writeln("skiff main.boat");
     let r = wasm.evaluate(program);
+    term.write("> ");
   };
 
   return (
