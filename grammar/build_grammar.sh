@@ -1,0 +1,1 @@
+./node_modules/.bin/lezer-generator grammar/skiff.grammar -o grammar/parser.js 

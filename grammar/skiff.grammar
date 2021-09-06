@@ -133,7 +133,7 @@ Pattern {
 }
 
 // token and skip definitions
-@skip  { space }
+@skip  { space | Comment }
 
 VariableName { identifier ~functionApp  }
 FunctionName { identifier }
@@ -147,4 +147,5 @@ End { kw<"end"> }
   space { std.whitespace+ }
   Number { std.digit+ }
   identifier { $[a-zA-Z]$[a-zA-Z0-9_]* }
+  Comment { "#" ![\n]* }
 }
