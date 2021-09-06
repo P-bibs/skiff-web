@@ -48,7 +48,6 @@ const Evaluator = ({ editorState }) => {
         <button className="btn mx-2" onClick={evaluate_program}>
           Run
         </button>
-        <button className="btn mx-2">Verify</button>
       </div>
 
       <div className="h-0 flex-grow bg-black" ref={terminalRef}></div>
